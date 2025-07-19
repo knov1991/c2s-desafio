@@ -20,7 +20,7 @@ class Carro(Base):
     transmissao = Column(String)
     preco = Column(Integer)
 
-def gerar_carros_fake(session, quantidade=20):
+def gerar_carros_fake(session, quantidade=100):
     tuplas_marca_modelo = [
         ("Volkswagen", "Gol"),
         ("Volkswagen", "Polo"),
