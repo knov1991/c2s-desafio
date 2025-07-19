@@ -12,19 +12,9 @@ class ChatCarroAgent:
     def buscar_carros(self):
         carros = self.session.query(Carro).all()
         return "\n".join([
-            f"""
-                Marca: {carro.marca}
-                Modelo: {carro.modelo}
-                Ano: {carro.ano}
-                Motorização: {carro.motorizacao}
-                Combustível: {carro.combustivel}
-                Transmissão: {carro.transmissao}
-                Cor: {carro.cor}
-                Quilometragem: {carro.quilometragem}
-                Portas: {carro.portas}
-                Preço: {carro.preco}
-            """
-        for carro in carros
+            f"{carro.marca} {carro.modelo} {carro.motorizacao} ({carro.ano}) | {carro.combustivel} | "
+            f"{carro.transmissao} | {carro.cor} | {carro.quilometragem} KM | {carro.portas} portas | R${carro.preco}"
+            for carro in carros
         ])
 
     def responder(self, pergunta: str) -> str:
@@ -42,7 +32,13 @@ class ChatCarroAgent:
         # Usei llama3.1 por já ter ele instalado e já estava usando para estudo
         resposta = ollama.chat(
             model="llama3.1",
-            messages=self.messages
+            messages=self.messages,
+            options={
+                "temperature": 0.1,
+                "top_p": 0.8,
+                "max_tokens": 1024,
+                "stream": False,
+            }
         )
 
         conteudo = resposta['message']['content']
